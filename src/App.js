@@ -1,37 +1,15 @@
-import Directory from './components/directory/directory.component';
-
+import Home from './components/routes/home.component';
+import { Routes,Route } from 'react-router-dom';
+// Routes allows this application to register these root level components
+// that will then in turn render a specific component when it matches this specific route that we are looking for.
 const App = () => {
-  const categories = [
-    {
-      "id": 1,
-      "title": "hats",
-      "imageUrl": "https://i.ibb.co/cvpntL1/hats.png"
-    },
-    {
-      "id": 2,
-      "title": "jackets",
-      "imageUrl": "https://i.ibb.co/px2tCc3/jackets.png"
-    },
-    {
-      "id": 3,
-      "title": "sneakers",
-      "imageUrl": "https://i.ibb.co/0jqHpnp/sneakers.png"
-    },
-    {
-      "id": 4,
-      "title": "womens",
-      "imageUrl": "https://i.ibb.co/GCCdy8t/womens.png"
-    },
-    {
-      "id": 5,
-      "title": "mens",
-      "imageUrl": "https://i.ibb.co/R70vBrQ/men.png"
-    }
-  ];
   return (
-        <Directory categories={categories} />
-  );
+    <Routes>
+      <Route path='/' element={<Home /> } />
+    </Routes>  
+    );
 }
-
+// web application, depending on the route and the sub route you navigate to,
+// will either decide to keep or remove and change different components on the page.
 
 export default App;
