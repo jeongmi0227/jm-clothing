@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth, signInWithRedirect, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import { getAuth, signInWithRedirect, signInWithPopup, GoogleAuthProvider,createUserWithEmailAndPassword } from 'firebase/auth';
 // doc method allows us to retrieve documents inside of our firestore database
 // getDoc method getting the documents data 
 // setDoc method setting the documents data
@@ -19,14 +19,15 @@ const firebaseConfig = {
   // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
   
-const provder = new GoogleAuthProvider();
+const googleProvder = new GoogleAuthProvider();
 
-provder.setCustomParameters({
+googleProvder.setCustomParameters({
     prompt:"select_account"
 });
 
 export const auth = getAuth();
-export const signInWithGooglePopup = () => signInWithPopup(auth, provder);
+export const signInWithGooglePopup = () => signInWithPopup(auth, googleProvder);
+export const signInWithGoogleRedirect = () => signInWithRedirect(auth,googleProvder);
 
 export const db = getFirestore();
 
@@ -37,12 +38,12 @@ export const createUserDocumentFromAuth = async (userAuth) => {
     // arg2 : collections
     // arg3 : identifier
     const userDocRef = doc(db, 'users', userAuth.uid);
-    console.log(userDocRef);
+    // console.log(userDocRef);
     // userSnapshot allow us to check whether or not there's an instancee of it that exists inside of a database
     // or also us to access the data.
     const userSnapshot = await getDoc(userDocRef);
-    console.log(userSnapshot);
-    console.log(userSnapshot.exists());
+    // console.log(userSnapshot);
+    // console.log(userSnapshot.exists());
 
     // if user data does not exist
     // create / set the document with the data from userAuth in my collection
@@ -63,4 +64,8 @@ export const createUserDocumentFromAuth = async (userAuth) => {
     // if user data exists
     // return userDocRef
 
+}
+
+export const createAuthUserWithEmailAndPassword = async () => {
+    
 }
