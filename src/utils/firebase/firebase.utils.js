@@ -1,5 +1,18 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth, signInWithRedirect, signInWithPopup, GoogleAuthProvider,createUserWithEmailAndPassword } from 'firebase/auth';
+import {
+    getAuth,
+    signInWithRedirect,
+    signInWithPopup,
+    GoogleAuthProvider,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    signOut,
+    onAuthStateChanged
+} from 'firebase/auth';
+// Observable listener is a way for us to hook into some kind of stream of events
+// Whether these events are seen at events or sign out events were actually able to trigger somethign based on these changes.
+
+
 // doc method allows us to retrieve documents inside of our firestore database
 // getDoc method getting the documents data 
 // setDoc method setting the documents data
@@ -73,3 +86,14 @@ export const createAuthUserWithEmailAndPassword = async (email,password) => {
 
     return await createUserWithEmailAndPassword(auth, email, password);
 }
+
+export const signInAuthUserWithEmailAndPassword = async (email, password) => {
+    if (!email || !password) return;
+    return await signInWithEmailAndPassword(auth, email, password);
+}    
+
+export const signOutUser = async () => await signOut(auth);
+
+// when user signs in or signs out the callback will be invoked whenever a user authenticates in and whenever an 
+// authentication out.
+export const onAuthStateChangedListener = (callback) => onAuthStateChanged(auth, callback);
