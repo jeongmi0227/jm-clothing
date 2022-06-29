@@ -22,20 +22,19 @@ const removeCartItem = (cartItems, productToRemove) => {
     const checkItem = cartItems.find((cartItem) => cartItem.id === productToRemove.id);
 
     // if found, then remove item
-    if (checkItem.quantity > 1) {
-        // reduce quantity
-        return cartItems.map((cartItem) =>
-            cartItem.id === productToRemove.id ?
-                { ...cartItem, quantity: cartItem.quantity - 1 } : cartItem
-        );
-    } else {
+    if (checkItem.quantity == 1) {
         // remove from the list
         return cartItems.filter((cartItem) => cartItem.id !== productToRemove.id);
+
     }
+    // reduce quantity
+    return cartItems.map((cartItem) =>
+        cartItem.id === productToRemove.id ?
+        { ...cartItem, quantity: cartItem.quantity - 1 } : cartItem);
 }
 
-const deleteCartItem = (cartItems, productToRemove) => {
-    return cartItems.filter((cartItem) => cartItem.id !== productToRemove.id);
+const clearCartItem = (cartItems, productToClear) => {
+    return cartItems.filter((cartItem) => cartItem.id !== productToClear.id);
 }
 export const CartContext = createContext({
     isCartOpen: false,
@@ -43,7 +42,8 @@ export const CartContext = createContext({
     cartItems: [],
     addItemToCart: () => { },
     cartCount: 0,
-    removeItemToCart: () => { },
+    removeItemFromCart: () => { },
+    clearItemFromCart: () => { },
     cartTotalPrice:0,
 });
 
@@ -56,24 +56,27 @@ export const CartProvider = ({ children }) => {
     useEffect(() => { 
         const newCartCount = cartItems.reduce((total, cartItem) => total + cartItem.quantity, 0);
         setCartCount(newCartCount);
+    }, [cartItems]);
+
+    // Although it works as cartCount, however, create a new useEffect
+    // This is the best practice when using effect make sure it governs one singular responsibility
+    useEffect(() => {
         const newCartTotalPrice = cartItems.reduce((totalPrice, cartItem) => totalPrice + cartItem.quantity * cartItem.price, 0);
         setCartTotalPrice(newCartTotalPrice);
-    }, [cartItems]);
+    },[cartItems]);
     // addItemToCart triggers whenever a user clicks on button
     const addItemToCart = (productToAdd) => { 
         setCartItem(addCartItem(cartItems, productToAdd));
     }
 
-    const removeItemToCart = (productToRemove,deleteOption) => { 
-        // console.log(removeCartItem(cartItems, productToRemove));
-        if (!deleteOption) {
-            setCartItem(removeCartItem(cartItems, productToRemove));    
-        } else {
-            setCartItem(deleteCartItem(cartItems, productToRemove));    
-        }
+    const removeItemFromCart = (productToRemove) => { 
+        setCartItem(removeCartItem(cartItems, productToRemove));    
     }
 
+    const clearItemFromCart = (productToClear) => {
+        setCartItem(clearCartItem(cartItems, productToClear));    
+    }
 
-    const value = { isCartOpen,setIsCartOpen ,addItemToCart,cartItems,cartCount,removeItemToCart,cartTotalPrice};
+    const value = { isCartOpen,setIsCartOpen ,addItemToCart,cartItems,cartCount,removeItemFromCart,cartTotalPrice,clearItemFromCart};
     return (<CartContext.Provider value={value}>{children}</CartContext.Provider>);
 }

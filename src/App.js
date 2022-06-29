@@ -4,7 +4,7 @@ import { Routes, Route } from 'react-router-dom';
 import Navigation from './routes/navigation/navigation.component';
 import Authentication from './routes/authentication/authentication.component';
 import Shop from './routes/shop/shop.component'
-import CheckOut from './components/check-out/check-out.component';
+import CheckOut from './components/checkout/checkout.component';
 
 // Routes allows this application to register these root level components
 // that will then in turn render a specific component when it matches this specific route that we are looking for.
