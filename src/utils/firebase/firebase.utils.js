@@ -16,7 +16,16 @@ import {
 // doc method allows us to retrieve documents inside of our firestore database
 // getDoc method getting the documents data 
 // setDoc method setting the documents data
-import {getFirestore,doc, getDoc,setDoc} from 'firebase/firestore';
+import {
+    getFirestore,
+    doc,
+    getDoc,
+    setDoc,
+    collection,
+    writeBatch,
+    query,
+    getDocs,
+} from 'firebase/firestore';
 
 
 const firebaseConfig = {
@@ -43,6 +52,38 @@ export const signInWithGooglePopup = () => signInWithPopup(auth, googleProvder);
 export const signInWithGoogleRedirect = () => signInWithRedirect(auth,googleProvder);
 
 export const db = getFirestore();
+
+export const addCollectionsAndDocuments = async (collectionKey, objectsToAdd) => {
+    // Get Collection reference even if does not exist
+    const collectionRef = collection(db, collectionKey);
+    // transactions successful units of work 
+    // batch 
+    const batch = writeBatch(db);
+    objectsToAdd.forEach((object) => {
+        const docRef = doc(collectionRef, object.title.toLowerCase());
+        // console.log(docRef);
+        batch.set(docRef,object);
+    });
+    
+    await batch.commit();
+    console.log('Batch commit');
+}
+// isolate third party to maintenance
+export const getCategoriesAndDocuments = async () => {
+    const collectionRef = collection(db, 'categories');
+    // can get snapshot
+    const q = query(collectionRef);
+
+    // getDocs asynchronous ability to fetch document snapshot that we want.
+    const querySnapShot = await getDocs(q);
+    // return an array of individual document and snapshot that actual data themselves
+    const categoryMap = querySnapShot.docs.reduce((acc, docSnapshot) => { 
+        const { title, items} = docSnapshot.data();
+        acc[title.toLowerCase()] = items;
+        return acc;
+    }, {});
+    return categoryMap;
+}
 
 export const createUserDocumentFromAuth = async (userAuth,additionalInformation={}) => {
     if (!userAuth) return;
