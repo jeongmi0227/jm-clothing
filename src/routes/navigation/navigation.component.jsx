@@ -1,15 +1,23 @@
 import { Fragment,useContext } from "react";
 import { Outlet, Link } from "react-router-dom";
+import { useSelector } from "react-redux"; // useSelector hook allows us interact from a component with the Redux store.
 import CartIcon from "../../components/cart-icon/cart-icon.component";
 import CartDropdown from "../../components/cart-dropdown/cart-dropdown.component";
-import { UserContext } from "../../contexts/user.context";
 import { CartContext } from "../../contexts/cart.context";
+import { selectCurrentUser } from "../../store/user/user.selector";
 import { ReactComponent as CrwnLogo } from "../../assets/crown.svg";
 import { signOutUser } from "../../utils/firebase/firebase.utils";
 import { NavigationContainer,NavLink,NavLinks,LogoContainer} from './navigation.styles';
 
 const Navigation = () => {
-    const { currentUser } = useContext(UserContext);
+    // useSelector is a hook that we pass a selector function and a selector function is something that essentially extracts off the values
+    // that we want from the whole entire Redux store. (Note :  most of the selectors are just functions that take state and then return the value that is deeply nested that we want)
+
+    // Whenever the state object changes by reference due to redux,
+    // every time whenever we update any of our reducer values, we always return a brand new state object with the changed values.
+    // When that happends, the selector will rerun current user updates and then react will re render this component.
+    const currentUser = useSelector(selectCurrentUser);
+
     const { isCartOpen } = useContext(CartContext);
     // userContext as a hook tells component whenever a value inside of context updates re-render
     // console.log(currentUser);
