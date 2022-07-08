@@ -12,6 +12,9 @@ import Shop from './routes/shop/shop.component'
 import CheckOut from './components/checkout/checkout.component';
 import { setCurrentUser } from "./store/user/user.action";
 
+
+import { getCategoriesAndDocuments } from "./utils/firebase/firebase.utils";
+import { setCategoriesMap } from "./store/categories/category.action";
 // Routes allows this application to register these root level components
 // that will then in turn render a specific component when it matches this specific route that we are looking for.
 const App = () => {
@@ -23,8 +26,6 @@ const App = () => {
         if (user) {
           createUserDocumentFromAuth(user);
         }
-      console.log(11);
-      console.log(user);
       // dispatch actions to the root reducer, which in turn passes the action to every single reducer function.
         dispatch(setCurrentUser(user));
     });
