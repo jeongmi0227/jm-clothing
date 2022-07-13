@@ -11,9 +11,28 @@ import logger from 'redux-logger';
 import { rootReducer } from './root-reducer';
 // reducers allow us to actually form the state object.
 
+// The format of a middleware always follows the same signature.
+// Three functions that return from one another.
+// currying a function is a function that returns back another function.
+// it's just a function generator and it allows us to create reusable function.
+const loggerMiddleware = (store) => (next) => (action) => {
+    if (!action.type) {
+        return next(action);
+    }
+
+    console.log('type: ', action.type);
+    console.log('payload: ', action.payload);
+    console.log('currentState: ', store.getState());
+
+    next(action); // the moment this next call happends, actions gets passed on, subsequent middleware will all run
+    // reducer will all run, and then only when that is complete will any code after this next fire.
+
+    console.log('next state: ', store.getState());  // new state 
+}
+
 // Middleware is like little library helpers that run before an action hits the reducer
 // So whenever we dispatch an action before that action hits the reducers, it hits the middleware first.
-const middleWares = [logger];
+const middleWares = [loggerMiddleware];
 // compose is a functional programming concept.
 // It's essentially a way for us to pass multiple functions left to right.
 // composition pattern is concered for redux
