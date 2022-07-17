@@ -17,8 +17,8 @@ const Category = () => {
     const [products, setProducts] = useState(categoriesMap[category]);
     // If the component renders, products will not update unless category or categoriesMap has changed.
     useEffect(() => {
-        console.log(category);
-        console.log(categoriesMap);
+        // console.log(category);
+        // console.log(categoriesMap);
         setProducts(categoriesMap[category]);
     }, [category, categoriesMap]);
     
