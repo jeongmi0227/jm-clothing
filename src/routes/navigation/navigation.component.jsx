@@ -19,7 +19,6 @@ const Navigation = () => {
     const currentUser = useSelector(selectCurrentUser);
 
     const isCartOpen = useSelector(selectIsCartOpen);
-    // const { isCartOpen } = useContext(CartContext);
     // userContext as a hook tells component whenever a value inside of context updates re-render
     // console.log(currentUser);
    
