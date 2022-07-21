@@ -73,7 +73,7 @@ export const getCategoriesAndDocuments = async () => {
     const collectionRef = collection(db, 'categories');
     // can get snapshot
     const q = query(collectionRef);
-
+    // await Promise.reject(new Error('new error'));
     // getDocs asynchronous ability to fetch document snapshot that we want.
     const querySnapShot = await getDocs(q);
 

@@ -10,6 +10,8 @@ import { compose, createStore, applyMiddleware } from 'redux';
 import { persistStore,persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import logger from 'redux-logger';
+// Redux-thunk is asynchronous side effects inside of Redux
+import thunk from 'redux-thunk';
 import { rootReducer } from './root-reducer';
 // reducers allow us to actually form the state object.
 
@@ -18,14 +20,14 @@ import { rootReducer } from './root-reducer';
 const persistConfig = {
     key: 'root',
     storage,
-    blacklist: ['user']
+    whitelist: ['cart']
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 // Middleware is like little library helpers that run before an action hits the reducer
 // So whenever we dispatch an action before that action hits the reducers, it hits the middleware first.
-const middleWares = [process.env.NODE_ENV !== 'production' && logger].filter(Boolean); // remove anything that's got false ,if it is true return object (middleware will be applied in development)
+const middleWares = [process.env.NODE_ENV !== 'production' && logger, thunk].filter(Boolean); // remove anything that's got false ,if it is true return object (middleware will be applied in development)
 
 const composeEnhancer = (process.env.NODE_ENV !== 'production' && window && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose;
 // compose is a functional programming concept.
