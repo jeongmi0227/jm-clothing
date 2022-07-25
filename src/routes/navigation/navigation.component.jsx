@@ -1,15 +1,15 @@
 import { Fragment } from "react";
 import { Outlet, Link } from "react-router-dom";
-import { useSelector } from "react-redux"; // useSelector hook allows us interact from a component with the Redux store.
+import { useSelector,useDispatch } from "react-redux"; // useSelector hook allows us interact from a component with the Redux store.
 import CartIcon from "../../components/cart-icon/cart-icon.component";
 import CartDropdown from "../../components/cart-dropdown/cart-dropdown.component";
 import { selectIsCartOpen } from "../../store/cart/cart.selector";
 import { selectCurrentUser } from "../../store/user/user.selector";
 import { ReactComponent as CrwnLogo } from "../../assets/crown.svg";
-import { signOutUser } from "../../utils/firebase/firebase.utils";
+import { signOutStart } from "../../store/user/user.action";
 import { NavigationContainer,NavLink,NavLinks,LogoContainer} from './navigation.styles';
-
 const Navigation = () => {
+    const dispatch = useDispatch();
     // useSelector is a hook that we pass a selector function and a selector function is something that essentially extracts off the values
     // that we want from the whole entire Redux store. (Note :  most of the selectors are just functions that take state and then return the value that is deeply nested that we want)
 
@@ -21,7 +21,7 @@ const Navigation = () => {
     const isCartOpen = useSelector(selectIsCartOpen);
     // userContext as a hook tells component whenever a value inside of context updates re-render
     // console.log(currentUser);
-   
+    const signOutUser = () => dispatch(signOutStart());
     return (
       <Fragment>
         <NavigationContainer>

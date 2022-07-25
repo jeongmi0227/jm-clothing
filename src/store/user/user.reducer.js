@@ -18,7 +18,11 @@ export const userReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 currentUser: payload
             };
+        case USER_ACTION_TYPE.SIGN_OUT_SUCCESS:
+            return { ...state, currentUser: null };
         case USER_ACTION_TYPE.SIGN_IN_FAILED:
+        case USER_ACTION_TYPE.SIGN_UP_FAILED:
+        case USER_ACTION_TYPE.SIGN_OUT_FAILED:
             return { ...state, error: payload };
         // return state reducer did not change, so reducer does not need to update 
         // and this is going to be important when it comes to re-render.
