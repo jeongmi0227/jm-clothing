@@ -1,7 +1,9 @@
 import { USER_ACTION_TYPE } from "./user.types";
 
 const INITIAL_STATE = {
-    currentUser:null
+    currentUser: null,
+    isLoading: false,
+    error:null,
 }
 // Context API, dispatch only fire specific reducer
 // Every single reducer receives every single action inside of Redux
@@ -11,11 +13,13 @@ export const userReducer = (state = INITIAL_STATE, action) => {
     const { type, payload } = action;
 
     switch (type) {
-        case USER_ACTION_TYPE.SET_CURRENT_USER:
+        case USER_ACTION_TYPE.SIGN_IN_SUCCESS:
             return {
                 ...state,
-                currentUser:payload
-            }
+                currentUser: payload
+            };
+        case USER_ACTION_TYPE.SIGN_IN_FAILED:
+            return { ...state, error: payload };
         // return state reducer did not change, so reducer does not need to update 
         // and this is going to be important when it comes to re-render.
         default:
