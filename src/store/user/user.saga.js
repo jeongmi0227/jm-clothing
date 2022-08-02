@@ -19,7 +19,9 @@ import {
     createAuthUserWithEmailAndPassword,
     signOutUser
 } from '../../utils/firebase/firebase.utils';
-
+// Redux-saga call vs put
+// call() function is used to create effect description which instructs middleware to call the promist
+// put() function creates an effect, which instructs middleware to dispatch an action to the store.(could trigger some other saga)but the saga isnot waiting for this action to finish. The saga is free to run to the next yield.
 export function* getSnapshotFromUserAuth(userAuth, additionalDetails) {
     try {
         // every single step that yields you want to be as descriptive as possible
