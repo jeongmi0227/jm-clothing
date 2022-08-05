@@ -11,6 +11,7 @@ import Navigation from './routes/navigation/navigation.component';
 import Authentication from './routes/authentication/authentication.component';
 import Shop from './routes/shop/shop.component'
 import CheckOut from './components/checkout/checkout.component';
+import OrderHistory from "./components/order-history/order-history.component";
 import { checkUserSession } from "./store/user/user.action";
 
 // import { getCategoriesAndDocuments } from "./utils/firebase/firebase.utils";
@@ -43,7 +44,8 @@ const App = () => {
         <Route index={true} element={<Home />} /> 
         <Route path='shop/*' element={<Shop />} />
         <Route path='auth' element={<Authentication />} />  
-        <Route path='checkout' element={<CheckOut/>} />
+        <Route path='checkout' element={<CheckOut />} />
+        <Route path='/order' element={<OrderHistory />}/>
       </Route>
 
     </Routes>  

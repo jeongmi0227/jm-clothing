@@ -1,0 +1,3 @@
+export const ORDER_ACTION_TYPES = {
+    SET_ORDER_HISTORY: 'order/SET_ORDER_HISTORY',
+}

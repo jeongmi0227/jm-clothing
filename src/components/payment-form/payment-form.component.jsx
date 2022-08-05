@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
-import { useSelector } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
+import { clearAllFromCart } from "../../store/cart/cart.action";
 import { selectCartTotal } from '../../store/cart/cart.selector';
 import { selectCurrentUser } from '../../store/user/user.selector';
 
@@ -9,13 +10,16 @@ import { PaymentButton, PaymentFormContainer, FormContainer } from "./payment-fo
 
 // fire action to clear the cart 
 // make order confirmation page
-
 const PaymentForm = () => {
+    const dispatch = useDispatch();
     const stripe = useStripe();
     const elements = useElements();
     const amount = useSelector(selectCartTotal);
     const currentUser = useSelector(selectCurrentUser);
     const [isPrcoessingPayment, setIsProcessingPayment] = useState(false);
+    // select all the cart Items
+    // const cartItems = useSelector(selectCartItems);
+    
     const paymentHandler = async (e) => {
         e.preventDefault();
 
@@ -60,6 +64,7 @@ const PaymentForm = () => {
         } else {
             if (paymentResult.paymentIntent.status == 'succeeded') {
                 alert('payment successful');
+                dispatch(clearAllFromCart());
             }
         }
     }
@@ -75,6 +80,5 @@ const PaymentForm = () => {
         </PaymentFormContainer>
     )
 };
-
 
 export default PaymentForm;
