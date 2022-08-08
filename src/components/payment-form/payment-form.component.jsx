@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { useSelector,useDispatch } from "react-redux";
-import { clearAllFromCart } from "../../store/cart/cart.action";
-import { selectCartTotal } from '../../store/cart/cart.selector';
+import { addOrderHistory } from "../../store/order/order.action";
+import { selectOrderHistory } from "../../store/order/order.selector";
+import { selectCartItems, selectCartTotal } from '../../store/cart/cart.selector';
 import { selectCurrentUser } from '../../store/user/user.selector';
-
+import { clearAllFromCart } from '../../store/cart/cart.action';
 import { BUTTON_TYPES_CLASSES } from "../button/button.component";
 import { PaymentButton, PaymentFormContainer, FormContainer } from "./payment-form.styles";
 
@@ -15,8 +16,12 @@ const PaymentForm = () => {
     const stripe = useStripe();
     const elements = useElements();
     const amount = useSelector(selectCartTotal);
+    const orderItems = useSelector(selectCartItems);
+    const orderHistory = useSelector(selectOrderHistory);
     const currentUser = useSelector(selectCurrentUser);
     const [isPrcoessingPayment, setIsProcessingPayment] = useState(false);
+    console.log(currentUser);
+    console.log(orderHistory);
     // select all the cart Items
     // const cartItems = useSelector(selectCartItems);
     
@@ -44,7 +49,7 @@ const PaymentForm = () => {
           
         // fetch request to back end in order to create a payment intent
         // payment intent is essentially something that stripe creates so that it knows that there is a payment coming and this payment intents is what Stripe uses to actually confirm that there's a final payment about to happen.
-        // console.log(response);
+        console.log(response);
 
         const { paymentIntent: { client_secret } } = response;
         // console.log(client_secret);
@@ -59,11 +64,14 @@ const PaymentForm = () => {
             }
         })
         setIsProcessingPayment(false);
+        console.log(paymentResult);
         if (paymentResult.error) {
             alert(paymentResult.error);
         } else {
             if (paymentResult.paymentIntent.status == 'succeeded') {
                 alert('payment successful');
+                console.log(orderItems + '/' + (paymentResult.paymentIntent.amount) / 100 + '/' + paymentResult.paymentIntent.created);
+                dispatch(addOrderHistory(orderItems, paymentResult.paymentIntent.created,currentUser.id));
                 dispatch(clearAllFromCart());
             }
         }
