@@ -1,11 +1,15 @@
 import { useSelector } from "react-redux";
-import { selectOrderHistory } from "../../store/order/order.selector";
+import { selectOrderHistory,selectOrderDate } from "../../store/order/order.selector";
 import { OrderHistoryContainer } from "./order-history.styles";
+import { selectCurrentUser } from "../../store/user/user.selector";
+import OrderHistoryList from "../order-history-list/order-history-list.component";
 
 const OrderHistory = () => {
     const orderHistory = useSelector(selectOrderHistory);
-    console.log('sss');
-    console.log(orderHistory);
+    const currentUser = useSelector(selectCurrentUser);
+    const orderDate = useSelector(selectOrderDate);
+    // console.log(orderHistory);
+    // console.log(currentUser.displayName);
     return (
         <OrderHistoryContainer>
             <h1>Order History</h1>
@@ -17,15 +21,13 @@ const OrderHistory = () => {
                     <span>Ship to</span>
                 </div>
                 <div className='header-block'>
-                    <span>Total</span>
+                    <span>Price</span>
                 </div>
                 <div className='header-block'>
                     <span>BuyAgain</span>
                 </div>
             </div>
-            <div>
-            
-            </div>
+            {orderHistory.map((order) => <OrderHistoryList key={order.id} order={order} userName={currentUser.displayName} orderDate={orderDate} />)}
         </OrderHistoryContainer>
     )
 };

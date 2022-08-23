@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const OrderContainer = styled.div`
+export const OrderHistoryListContainer = styled.div`
 width: 55%;
 min-height: 90vh;
 display: flex;

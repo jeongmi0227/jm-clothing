@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { useSelector,useDispatch } from "react-redux";
-import { addOrderHistory } from "../../store/order/order.action";
+import { addOrderHistory,addOrderDate } from "../../store/order/order.action";
 import { selectOrderHistory } from "../../store/order/order.selector";
 import { selectCartItems, selectCartTotal } from '../../store/cart/cart.selector';
 import { selectCurrentUser } from '../../store/user/user.selector';
@@ -71,7 +71,8 @@ const PaymentForm = () => {
             if (paymentResult.paymentIntent.status == 'succeeded') {
                 alert('payment successful');
                 console.log(orderItems + '/' + (paymentResult.paymentIntent.amount) / 100 + '/' + paymentResult.paymentIntent.created);
-                dispatch(addOrderHistory(orderItems, paymentResult.paymentIntent.created,currentUser.id));
+                dispatch(addOrderHistory(orderItems));
+                dispatch(addOrderDate(paymentResult.paymentIntent.created));
                 dispatch(clearAllFromCart());
             }
         }

@@ -6,3 +6,8 @@ export const selectOrderHistory = createSelector(
     [selectOrderReducer],
     (order) => order.orderItems
 );
+
+export const selectOrderDate = createSelector(
+    [selectOrderReducer],
+    (order)=>order.orderDate
+);

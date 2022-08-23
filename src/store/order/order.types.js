@@ -1,3 +1,4 @@
 export const ORDER_ACTION_TYPES = {
     SET_ORDER_HISTORY: 'order/SET_ORDER_HISTORY',
+    SET_ORDER_DATE:'order/SET_ORDER_DATE',
 }

@@ -13,11 +13,12 @@ const convertUnixTime = (UNIX_timestamp) => {
     var time = year+'/' + month + '/' + date + ' ' + hour + ':' + min + ':' + sec ;
     return time;
 }
-const addItemToHistory = (orderItems,createdTime,userId) => {
-    const orderDate = convertUnixTime(createdTime);
-    return [...orderItems, { orderDate: orderDate, userId: userId }]
+
+export const addOrderHistory = (orderItems) => {
+    return createAction(ORDER_ACTION_TYPES.SET_ORDER_HISTORY, orderItems);
 }
-export const addOrderHistory = (orderItems, createdTime, userId) => {
-    const newOrderHistory = addItemToHistory(orderItems, createdTime, userId);
-    return createAction(ORDER_ACTION_TYPES.SET_ORDER_HISTORY, newOrderHistory);
+
+export const addOrderDate = (createdTime) => {
+    const orderDate = convertUnixTime(createdTime);
+    return createAction(ORDER_ACTION_TYPES.SET_ORDER_DATE, orderDate);
 }
