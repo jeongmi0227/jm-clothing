@@ -1,4 +1,3 @@
-import { OrderHistoryListContainer } from "./order-history-list.styles";
 
 const OrderHistoryList = ({ order, userName,orderDate }) => {
     const { name, imageUrl, quantity, price } = order;
